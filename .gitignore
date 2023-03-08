@@ -1,0 +1,9 @@
+.vscode/
+.idea/
+cover.*
+
+.tmp/
+.testdata/
+
+*.env
+!package/config/native.env

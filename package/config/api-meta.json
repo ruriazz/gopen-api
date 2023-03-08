@@ -1,0 +1,12 @@
+[
+    {
+        "code": "S0000",
+        "http": 200,
+        "message": "OK"
+    },
+    {
+        "code": "E0000",
+        "http": 400,
+        "message": "General Error"
+    }
+]
