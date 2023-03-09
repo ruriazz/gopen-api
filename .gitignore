@@ -1,0 +1,9 @@
+.vscode/
+.idea/
+cover.*
+
+.tmp/
+.testdata/
+
+*.env
+!master.env

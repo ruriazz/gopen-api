@@ -1,0 +1,16 @@
+.vscode/
+.idea/
+cover.*
+
+.tmp/
+.testdata/
+
+*.env
+!master.env
+
+.git*
+Dockerfile
+Makefile
+
+.air.toml
+.tmp/
