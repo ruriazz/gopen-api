@@ -6,4 +6,4 @@ cover.*
 .testdata/
 
 *.env
-!package/config/native.env
+!master.env

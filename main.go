@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"os"
 
-	openapiRoute "github.com/ruriazz/gopen-api/openapi"
+	apiRoute "github.com/ruriazz/gopen-api/api"
 	"github.com/ruriazz/gopen-api/package/manager"
 )
 
 func main() {
-	mgr, err := manager.CreateManager()
+	manager, err := manager.NewManager()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
-	openapiRoute.InitRoute(mgr)
-	mgr.Server.HttpServer.ListenAndServe()
+	apiRoute.NewApiRoute(manager)
+	manager.Server.HttpServer.ListenAndServe()
 }

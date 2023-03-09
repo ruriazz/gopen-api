@@ -7,11 +7,15 @@ else
 	@echo "please run the command 'go install github.com/cosmtrek/air@latest' to install Air live reload"
 endif
 
-migration-status:
-	@go run cmd/db-migration.go status
+migrate:
+	@go run cmd/db_migration/main.go up
 
-migration-up:
-	@go run cmd/db-migration.go up
+test-coverage:
+	@go test -v -coverprofile cover.out ./...
+	@go tool cover -html=cover.out -o cover.html
+	@open cover.html
 
-migration-down:
-	@go run cmd/db-migration.go down
+generate-mock:
+	@echo "Generating..."
+	@mockgen -destination=package/settings/settings_test.go -package=settings -source=package/settings/settings.go
+	@echo "Done!"

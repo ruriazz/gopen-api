@@ -1,17 +1,15 @@
 package manager
 
 import (
-	"github.com/ruriazz/gopen-api/package/config"
-	"github.com/ruriazz/gopen-api/package/database"
+	"github.com/ruriazz/gopen-api/package/databases"
 	"github.com/ruriazz/gopen-api/package/logger"
-	responseWritter "github.com/ruriazz/gopen-api/package/response-writter"
-	"github.com/ruriazz/gopen-api/package/server"
+	restserver "github.com/ruriazz/gopen-api/package/rest_server"
+	"github.com/ruriazz/gopen-api/package/settings"
 )
 
 type Manager struct {
-	Conf      *config.Config
-	Server    *server.Server
+	Settings  *settings.Setting
+	Server    *restserver.Server
+	Databases *databases.Database
 	Logger    *logger.LogOptions
-	RW        *responseWritter.ResponseWritter
-	Databases *database.Databases
 }

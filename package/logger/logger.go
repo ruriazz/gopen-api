@@ -11,7 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func CreateLogger() Log {
+func NewLogger() Log {
 	opt := new(LogOptions)
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(os.Stdout)

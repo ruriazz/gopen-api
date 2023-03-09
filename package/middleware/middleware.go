@@ -7,21 +7,21 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ruriazz/gopen-api/package/config"
-	"github.com/ruriazz/gopen-api/package/helper"
+	packageHelper "github.com/ruriazz/gopen-api/package/helper"
 	"github.com/ruriazz/gopen-api/package/logger"
-	"github.com/ruriazz/gopen-api/package/server"
+	restserver "github.com/ruriazz/gopen-api/package/rest_server"
+	"github.com/ruriazz/gopen-api/package/settings"
 )
 
-func InitMiddleware(config *config.Config, server *server.Server) {
-	corsMiddleware := CreateCors(config)
+func NewMiddleware(setting *settings.Setting, server *restserver.Server) {
+	corsMiddleware := newCors(setting)
 
-	server.Engine.Use(DefaultMiddleware(config))
+	server.Engine.Use(DefaultMiddleware(setting))
 	server.Engine.Use(corsMiddleware)
 }
 
-func DefaultMiddleware(config *config.Config) gin.HandlerFunc {
-	_logger := logger.CreateLogger()
+func DefaultMiddleware(settings *settings.Setting) gin.HandlerFunc {
+	_logger := logger.NewLogger()
 	return func(c *gin.Context) {
 		t := time.Now()
 		fullpath := c.FullPath()
@@ -35,7 +35,7 @@ func DefaultMiddleware(config *config.Config) gin.HandlerFunc {
 		}
 
 		hostname := strings.TrimPrefix(url.Hostname(), "www.")
-		if !helper.StringInSlice(hostname, config.HTTP_ALLOWED_HOSTS) {
+		if !packageHelper.StringInSlice(hostname, settings.HTTP_ALLOWED_HOSTS) {
 			c.String(403, fmt.Sprintf("'%s' is not allowed host", hostname))
 			c.Abort()
 		}

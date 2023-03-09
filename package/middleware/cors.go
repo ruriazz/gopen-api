@@ -3,18 +3,18 @@ package middleware
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/ruriazz/gopen-api/package/config"
+	"github.com/ruriazz/gopen-api/package/settings"
 )
 
-func CreateCors(config *config.Config) gin.HandlerFunc {
+func newCors(settings *settings.Setting) gin.HandlerFunc {
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowCredentials = true
-	corsConfig.AllowHeaders = config.CORS_ALLOWED_HEADERS
+	corsConfig.AllowHeaders = settings.CORS_ALLOWED_HEADERS
 
-	if config.APP_ENV == "production" {
+	if settings.APP_ENV == "production" {
 		corsConfig.AllowAllOrigins = false
-		corsConfig.AllowOrigins = config.CORS_ALLOWED_ORIGINS
-		corsConfig.AllowMethods = config.CORS_ALLOWED_METHODS
+		corsConfig.AllowOrigins = settings.CORS_ALLOWED_ORIGINS
+		corsConfig.AllowMethods = settings.CORS_ALLOWED_METHODS
 	} else {
 		corsConfig.AllowAllOrigins = true
 	}

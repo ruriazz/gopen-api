@@ -1,40 +1,35 @@
 package manager
 
 import (
-	"github.com/ruriazz/gopen-api/package/config"
-	"github.com/ruriazz/gopen-api/package/database"
+	"github.com/ruriazz/gopen-api/package/databases"
 	"github.com/ruriazz/gopen-api/package/middleware"
-	responseWritter "github.com/ruriazz/gopen-api/package/response-writter"
-	"github.com/ruriazz/gopen-api/package/server"
+	restserver "github.com/ruriazz/gopen-api/package/rest_server"
+	"github.com/ruriazz/gopen-api/package/settings"
 )
 
-func CreateManager() (*Manager, error) {
-	_config, err := config.CreateConfig()
+func NewManager() (*Manager, error) {
+	_settings, err := settings.NewSettings()
 	if err != nil {
 		return nil, err
 	}
 
-	_database, err := database.NewDatabase(_config)
+	var _db databases.Database
+	_databases := databases.NewDatabases(_settings)
+	_db.MySqlDB, err = _databases.ConnectMySql()
 	if err != nil {
 		return nil, err
 	}
 
-	_server, err := server.CreateServer(_config)
+	_server, err := restserver.NewRestServer(_settings)
 	if err != nil {
 		return nil, err
 	}
 
-	_rw, err := responseWritter.CreateResponseWritter(_config)
-	if err != nil {
-		return nil, err
-	}
-
-	middleware.InitMiddleware(_config, _server)
+	middleware.NewMiddleware(_settings, _server)
 
 	return &Manager{
-		Conf:      _config,
+		Settings:  _settings,
+		Databases: &_db,
 		Server:    _server,
-		RW:        _rw,
-		Databases: _database,
 	}, nil
 }
