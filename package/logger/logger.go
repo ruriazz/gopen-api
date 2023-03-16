@@ -41,7 +41,7 @@ func (lo *LogOptions) ApiLog(c *gin.Context, t time.Time) {
 			Parameters:     param,
 			Headers:        c.Request.Header,
 			UserAgent:      c.Request.UserAgent(),
-			Latency:        (time.Since(t) * 1000).String(),
+			Latency:        time.Since(t).String(),
 			ResponseStatus: c.Writer.Status(),
 		},
 	})
