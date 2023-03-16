@@ -25,7 +25,7 @@ func JSON(fields FieldsV1) {
 		Success: metaObject.HttpCode >= 200 && metaObject.HttpCode <= 299,
 		Code:    metaObject.Code,
 		Message: metaObject.Message,
-		Latency: (time.Since(rt) * 1000).String(),
+		Latency: time.Since(rt).String(),
 	}
 
 	if fields.Data != nil {
@@ -34,7 +34,12 @@ func JSON(fields FieldsV1) {
 		response.Message = fields.Message
 	}
 
+	if fields.Pagination != nil {
+		response.Pagination = fields.Pagination
+	}
+
 	fields.Context.JSON(int(metaObject.HttpCode), response)
+	fields.Context.Next()
 }
 
 func apiMetaByCode(code string) *settings.ApiMeta {

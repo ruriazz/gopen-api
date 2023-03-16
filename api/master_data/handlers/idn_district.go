@@ -7,12 +7,12 @@ import (
 	responseHelper "github.com/ruriazz/gopen-api/helpers/response"
 )
 
-func (h MasterDataHandler) IdnProvince() domainInterface.IdnProvinceHandlers {
-	return IdnProvinceHandler{&h}
+func (h MasterDataHandler) IdnDistrict() domainInterface.IdnDistrictHandlers {
+	return IdnDistrictHandler{&h}
 }
 
-func (h IdnProvinceHandler) GetCollectionV1(context *gin.Context) {
-	context, err := h.Validators.IdnProvince().GetCollectionParameterV1(context)
+func (h IdnDistrictHandler) GetCollectionV1(context *gin.Context) {
+	context, err := h.Validators.IdnDistrict().GetCollectionParameterV1(context)
 	if err != nil {
 		responseHelper.JSON(responseHelper.FieldsV1{
 			Context:  context,
@@ -21,8 +21,9 @@ func (h IdnProvinceHandler) GetCollectionV1(context *gin.Context) {
 		return
 	}
 
+	provinceSlug := context.Param("slug")
 	queries, _ := context.Get("queries")
-	results, pagination, err := h.Usecases.IdnProvince().GetCollectionV1(queries.(domainEntity.GetProvinceCollectionParameterV1))
+	results, pagination, err := h.Usecases.IdnDistrict().GetCollectionV1(provinceSlug, queries.(domainEntity.GetDistrictCollectionParameterV1))
 	if err != nil {
 		responseHelper.JSON(responseHelper.FieldsV1{
 			Context:  context,
@@ -31,19 +32,24 @@ func (h IdnProvinceHandler) GetCollectionV1(context *gin.Context) {
 		return
 	}
 
-	result := h.Serializers.IdnProvince().DefaultIdnProvinceCollectionsV1(results)
+	if results == nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "S0001",
+		})
+		return
+	}
 
 	responseHelper.JSON(responseHelper.FieldsV1{
 		Context:    context,
-		Data:       result,
+		Data:       h.Serializers.IdnDistrict().DefaultIdnDistrictCollectionV1(results),
 		Pagination: pagination,
 	})
 }
 
-func (h IdnProvinceHandler) GetDetailV1(context *gin.Context) {
+func (h IdnDistrictHandler) GetDetailV1(context *gin.Context) {
 	slug := context.Param("slug")
-
-	result, err := h.Usecases.IdnProvince().GetDetailV1(slug)
+	result, err := h.Usecases.IdnDistrict().GetDetailV1(slug)
 	if err != nil {
 		responseHelper.JSON(responseHelper.FieldsV1{
 			Context:  context,
@@ -62,6 +68,6 @@ func (h IdnProvinceHandler) GetDetailV1(context *gin.Context) {
 
 	responseHelper.JSON(responseHelper.FieldsV1{
 		Context: context,
-		Data:    h.Serializers.IdnProvince().DefaultDetailV1(*result),
+		Data:    h.Serializers.IdnDistrict().DefaultIdnDistrictDetailV1(*result),
 	})
 }

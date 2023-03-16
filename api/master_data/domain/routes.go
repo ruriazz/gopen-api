@@ -2,15 +2,22 @@ package masterDataRoute
 
 import (
 	"github.com/gin-gonic/gin"
-	handler "github.com/ruriazz/gopen-api/api/master_data/handlers"
+	handlers "github.com/ruriazz/gopen-api/api/master_data/handlers"
 	"github.com/ruriazz/gopen-api/package/manager"
 )
 
 func NewRouterV1(router *gin.RouterGroup, manager *manager.Manager) {
+	masterDataHandler := handlers.NewMasterDataHandler(*manager)
+
 	idnProvince := router.Group("/idn-province")
 	{
-		idnProvinceHandler := handler.NewIdnProvinceHandler(*manager)
+		idnProvince.Handle("GET", "", masterDataHandler.IdnProvince().GetCollectionV1)
+		idnProvince.Handle("GET", ":slug", masterDataHandler.IdnProvince().GetDetailV1)
+		idnProvince.Handle("GET", ":slug/idn-districts", masterDataHandler.IdnDistrict().GetCollectionV1)
+	}
 
-		idnProvince.Handle("GET", "", idnProvinceHandler.GetCollections)
+	idnDistrict := router.Group("/idn-district")
+	{
+		idnDistrict.Handle("GET", ":slug", masterDataHandler.IdnDistrict().GetDetailV1)
 	}
 }
