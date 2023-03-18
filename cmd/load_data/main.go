@@ -30,6 +30,14 @@ func main() {
 	if err := loadIdnDistrict(database); err != nil {
 		panic(err)
 	}
+
+	if err := loadIdnSubdistrict(database); err != nil {
+		panic(err)
+	}
+
+	if err := loadIdnUrbanVillage(database); err != nil {
+		panic(err)
+	}
 }
 
 func loadIdnProvince(database *gorm.DB) error {
@@ -116,5 +124,91 @@ func loadIdnDistrict(database *gorm.DB) error {
 	}
 
 	fmt.Println("IDN District Data import finish.")
+	return nil
+}
+
+func loadIdnSubdistrict(database *gorm.DB) error {
+	type idnSubdistrictMaster struct {
+		ID            int
+		IdnDistrictId int `json:"idnKabupatenId"`
+		Slug          string
+		Code          string
+		Name          string
+		Alias         string
+	}
+
+	fmt.Println("Start IDN Subdistrict Data importing...")
+	var results []idnSubdistrictMaster
+	client := resty.New()
+
+	res, err := client.R().Get("https://raw.githubusercontent.com/ruriazz/master-data/master/idn-administrative-area/json/kecamatan.json")
+	if err != nil {
+		return err
+	}
+
+	json.Unmarshal(res.Body(), &results)
+	fmt.Printf("%d IDN Subdistrict Data collected\n", len(results))
+	for i, result := range results {
+		idnSubdistrict := models.IdnSubdistrict{
+			Pkid:            int16(result.ID),
+			IdnDistrictPkid: int16(result.IdnDistrictId),
+			Slug:            result.Slug,
+			Code:            result.Code,
+			Name:            result.Name,
+			Alias:           result.Alias,
+		}
+
+		if err := database.Clauses(clause.OnConflict{DoNothing: true}).Create(&idnSubdistrict).Error; err != nil {
+			fmt.Printf("ERROR create %s ", result.Name)
+			fmt.Println(err)
+		}
+		fmt.Printf("[%d] %s Created\n", len(results)-(i+1), result.Name)
+	}
+
+	fmt.Println("IDN Subdistrict Data import finish.")
+	return nil
+}
+
+func loadIdnUrbanVillage(database *gorm.DB) error {
+	type idnUrbanVillageMaster struct {
+		ID                 int
+		IdnSubdistrictPkid int `json:"idnKecamatanId"`
+		Slug               string
+		Code               string
+		Name               string
+		Alias              string
+		PostalCode         string
+	}
+
+	fmt.Println("Start IDN Urban Village Data importing...")
+	var results []idnUrbanVillageMaster
+	client := resty.New()
+
+	res, err := client.R().Get("https://raw.githubusercontent.com/ruriazz/master-data/master/idn-administrative-area/json/kelurahan.json")
+	if err != nil {
+		return err
+	}
+
+	json.Unmarshal(res.Body(), &results)
+	fmt.Printf("%d IDN Urban Village Data collected\n", len(results))
+	for i, result := range results {
+		idnUrbanVilage := models.IdnUrbanVillage{
+			Pkid:               int32(result.ID),
+			IdnSubdistrictPkid: int16(result.IdnSubdistrictPkid),
+			Slug:               result.Slug,
+			Code:               result.Code,
+			Name:               result.Name,
+			Alias:              result.Alias,
+			PostalCode:         result.PostalCode,
+		}
+
+		if err := database.Clauses(clause.OnConflict{DoNothing: true}).Create(&idnUrbanVilage).Error; err != nil {
+			fmt.Printf("ERROR create %s ", result.Name)
+			fmt.Println(err)
+		}
+		fmt.Printf("[%d] %s Created\n", len(results)-(i+1), result.Name)
+	}
+
+	fmt.Println("IDN Urban Village Data import finish.")
 	return nil
 }
