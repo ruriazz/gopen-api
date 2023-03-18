@@ -50,11 +50,11 @@ func (r IdnProvinceRepository) CollectionV1(queries *domainEntity.GetProvinceCol
 			Raw(rawQuery, sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1))).
 			Find(&[]models.IdnProvince{})
 		if session.Error != nil {
-			return nil, nil, err
+			return nil, nil, session.Error
 		}
 
 		resPagination, err := paginationHelper.NewPagination(session.RowsAffected, queries.Page, queries.Limit)
-		if session.Error != nil {
+		if err != nil {
 			return nil, nil, err
 		}
 
