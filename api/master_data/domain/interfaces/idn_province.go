@@ -9,21 +9,25 @@ import (
 
 type IdnProvinceHandlers interface {
 	GetCollectionV1(context *gin.Context)
+	GetDistrictCollectionV1(context *gin.Context)
 	GetDetailV1(context *gin.Context)
 }
 
 type IdnProvinceUsecases interface {
 	GetCollectionV1(queries domainEntities.GetProvinceCollectionParameterV1) ([]models.IdnProvince, *paginationHelper.PaginationV1, error)
+	GetDistrictCollectionV1(provinceSlug string, queries domainEntities.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
 	GetDetailV1(slug string) (*models.IdnProvince, error)
 }
 
 type IdnProvinceRepositories interface {
 	CollectionV1(queries *domainEntities.GetProvinceCollectionParameterV1, pagination bool) ([]models.IdnProvince, *paginationHelper.PaginationV1, error)
+	DistrictCollectionV1(model models.IdnDistrict, queries *domainEntities.GetDistrictCollectionParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
 	DetailV1(model models.IdnProvince) (*models.IdnProvince, error)
 }
 
 type IdnProvinceSerializers interface {
 	DefaultIdnProvinceCollectionsV1(dataModel []models.IdnProvince) []domainEntities.DefaultIdnProvinceCollectionV1
+	DefaultDistrictCollectionV1(dataModel []models.IdnDistrict) []domainEntities.DefaultIdnDistrictCollectionV1
 	DefaultDetailV1(dataModel models.IdnProvince) domainEntities.DefaultIdnProvinceDetailV1
 }
 

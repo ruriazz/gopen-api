@@ -17,3 +17,8 @@ type DefaultIdnProvinceDetailV1 struct {
 	Capital        string `json:"capital"`
 	Image          string `json:"image"`
 }
+
+type DefaultIdnDistrictCollectionV1 struct {
+	Slug string `json:"slug"`
+	Name string `json:"name"`
+}

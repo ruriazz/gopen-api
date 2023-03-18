@@ -13,17 +13,17 @@ type IdnDistrictHandlers interface {
 }
 
 type IdnDistrictUsecases interface {
-	GetCollectionV1(provinceSlug string, queries domainEntity.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
+	GetCollectionV1(queries domainEntity.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
 	GetDetailV1(slug string) (*models.IdnDistrict, error)
 }
 
 type IdnDistrictRepositories interface {
-	CollectionV1(model models.IdnDistrict, queries *domainEntity.GetDistrictCollectionParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
+	CollectionV1(queries *domainEntity.GetDistrictCollectionParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
 	DetailV1(model models.IdnDistrict) (*models.IdnDistrict, error)
 }
 
 type IdnDistrictSerializers interface {
-	DefaultIdnDistrictCollectionV1(dataModel []models.IdnDistrict) []domainEntity.DefaultIdnDistrictCollectionV1
+	DefaultIdnDistrictCollectionV1(dataModel []models.IdnDistrict) []domainEntity.DefaultIdnDistrictCollectionWithLongNameV1
 	DefaultIdnDistrictDetailV1(dataModel models.IdnDistrict) domainEntity.DefaultIdnDistrictDetailV1
 }
 

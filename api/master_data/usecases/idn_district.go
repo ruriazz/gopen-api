@@ -11,17 +11,8 @@ func (uc MasterDataUsecase) IdnDistrict() domainInterface.IdnDistrictUsecases {
 	return IdnDistrictUsecase{&uc}
 }
 
-func (uc IdnDistrictUsecase) GetCollectionV1(provinceSlug string, queries domainEntity.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error) {
-	province, err := uc.Repositories.IdnProvince().DetailV1(models.IdnProvince{Slug: provinceSlug})
-	if err != nil {
-		return nil, nil, err
-	}
-
-	if province == nil {
-		return nil, nil, nil
-	}
-
-	results, pagination, err := uc.Repositories.IdnDistrict().CollectionV1(models.IdnDistrict{IdnProvince: *province}, &queries, true)
+func (uc IdnDistrictUsecase) GetCollectionV1(queries domainEntity.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error) {
+	results, pagination, err := uc.Repositories.IdnDistrict().CollectionV1(&queries, true)
 	if err != nil {
 		return nil, nil, err
 	}

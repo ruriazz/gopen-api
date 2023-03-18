@@ -2,9 +2,10 @@ package masterDataDomainEntity
 
 type GetDistrictCollectionParameterV1 struct{ *GetCollectionParameterV1 }
 
-type DefaultIdnDistrictCollectionV1 struct {
-	Slug string `json:"slug"`
-	Name string `json:"name"`
+type DefaultIdnDistrictCollectionWithLongNameV1 struct {
+	Slug     string `json:"slug"`
+	Name     string `json:"name"`
+	LongName string `json:"longName"`
 }
 
 type DefaultIdnDistrictDetailV1 struct {

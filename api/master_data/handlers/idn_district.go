@@ -21,9 +21,8 @@ func (h IdnDistrictHandler) GetCollectionV1(context *gin.Context) {
 		return
 	}
 
-	provinceSlug := context.Param("slug")
 	queries, _ := context.Get("queries")
-	results, pagination, err := h.Usecases.IdnDistrict().GetCollectionV1(provinceSlug, queries.(domainEntity.GetDistrictCollectionParameterV1))
+	results, pagination, err := h.Usecases.IdnDistrict().GetCollectionV1(queries.(domainEntity.GetDistrictCollectionParameterV1))
 	if err != nil {
 		responseHelper.JSON(responseHelper.FieldsV1{
 			Context:  context,
