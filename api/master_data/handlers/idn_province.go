@@ -40,6 +40,42 @@ func (h IdnProvinceHandler) GetCollectionV1(context *gin.Context) {
 	})
 }
 
+func (h IdnProvinceHandler) GetDistrictCollectionV1(context *gin.Context) {
+	context, err := h.Validators.IdnDistrict().GetCollectionParameterV1(context)
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "E0001",
+		})
+		return
+	}
+
+	provinceSlug := context.Param("slug")
+	queries, _ := context.Get("queries")
+	results, pagination, err := h.Usecases.IdnProvince().GetDistrictCollectionV1(provinceSlug, queries.(domainEntity.GetDistrictCollectionParameterV1))
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "E0003",
+		})
+		return
+	}
+
+	if results == nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "S0001",
+		})
+		return
+	}
+
+	responseHelper.JSON(responseHelper.FieldsV1{
+		Context:    context,
+		Data:       h.Serializers.IdnProvince().DefaultDistrictCollectionV1(results),
+		Pagination: pagination,
+	})
+}
+
 func (h IdnProvinceHandler) GetDetailV1(context *gin.Context) {
 	slug := context.Param("slug")
 
