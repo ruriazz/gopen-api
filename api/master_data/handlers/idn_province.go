@@ -41,7 +41,7 @@ func (h IdnProvinceHandler) GetCollectionV1(context *gin.Context) {
 }
 
 func (h IdnProvinceHandler) GetDistrictCollectionV1(context *gin.Context) {
-	context, err := h.Validators.IdnDistrict().GetCollectionParameterV1(context)
+	context, err := h.Validators.IdnProvince().GetDistrictCollectionParameterV1(context)
 	if err != nil {
 		responseHelper.JSON(responseHelper.FieldsV1{
 			Context:  context,
@@ -52,7 +52,7 @@ func (h IdnProvinceHandler) GetDistrictCollectionV1(context *gin.Context) {
 
 	provinceSlug := context.Param("slug")
 	queries, _ := context.Get("queries")
-	results, pagination, err := h.Usecases.IdnProvince().GetDistrictCollectionV1(provinceSlug, queries.(domainEntity.GetDistrictCollectionParameterV1))
+	results, pagination, err := h.Usecases.IdnProvince().GetDistrictCollectionV1(provinceSlug, queries.(domainEntity.GetDistrictCollectionByProvinceParameterV1))
 	if err != nil {
 		responseHelper.JSON(responseHelper.FieldsV1{
 			Context:  context,

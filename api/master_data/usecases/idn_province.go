@@ -20,7 +20,7 @@ func (uc IdnProvinceUsecase) GetCollectionV1(queries domainEntity.GetProvinceCol
 	return results, pagination, nil
 }
 
-func (uc IdnProvinceUsecase) GetDistrictCollectionV1(provinceSlug string, queries domainEntity.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error) {
+func (uc IdnProvinceUsecase) GetDistrictCollectionV1(provinceSlug string, queries domainEntity.GetDistrictCollectionByProvinceParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error) {
 	province, err := uc.Repositories.IdnProvince().DetailV1(models.IdnProvince{Slug: provinceSlug})
 	if err != nil {
 		return nil, nil, err
@@ -30,7 +30,7 @@ func (uc IdnProvinceUsecase) GetDistrictCollectionV1(provinceSlug string, querie
 		return nil, nil, nil
 	}
 
-	results, pagination, err := uc.Repositories.IdnProvince().DistrictCollectionV1(models.IdnDistrict{IdnProvince: *province}, &queries, true)
+	results, pagination, err := uc.Repositories.IdnProvince().DistrictCollectionV1(*province, &queries, true)
 	if err != nil {
 		return nil, nil, err
 	}
