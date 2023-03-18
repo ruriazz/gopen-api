@@ -55,11 +55,11 @@ func (r IdnDistrictRepository) CollectionV1(queries *domainEntity.GetDistrictCol
 			Raw(rawQuery, sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1))).
 			Find(&[]models.IdnDistrict{})
 		if session.Error != nil {
-			return nil, nil, err
+			return nil, nil, session.Error
 		}
 
 		resPagination, err := paginationHelper.NewPagination(session.RowsAffected, queries.Page, queries.Limit)
-		if session.Error != nil {
+		if err != nil {
 			return nil, nil, err
 		}
 
@@ -130,11 +130,11 @@ func (r IdnDistrictRepository) SubdistrictCollectionV1(model models.IdnDistrict,
 			Raw(rawQuery, sql.Named("districtPkid", model.Pkid), sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1))).
 			Find(&[]models.IdnDistrict{})
 		if session.Error != nil {
-			return nil, nil, err
+			return nil, nil, session.Error
 		}
 
 		resPagination, err := paginationHelper.NewPagination(session.RowsAffected, queries.Page, queries.Limit)
-		if session.Error != nil {
+		if err != nil {
 			return nil, nil, err
 		}
 
