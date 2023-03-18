@@ -20,5 +20,13 @@ func NewRouterV1(router *gin.RouterGroup, manager *manager.Manager) {
 	{
 		idnDistrict.Handle("GET", "", masterDataHandler.IdnDistrict().GetCollectionV1)
 		idnDistrict.Handle("GET", ":slug", masterDataHandler.IdnDistrict().GetDetailV1)
+		idnDistrict.Handle("GET", ":slug/subdistricts", masterDataHandler.IdnDistrict().GetSubdistrictCollectionV1)
+	}
+
+	idnSubdistrict := router.Group("/idn-subdistrict")
+	{
+		idnSubdistrict.Handle("GET", "", masterDataHandler.IdnSubdistrict().GetCollectionV1)
+		idnSubdistrict.Handle("GET", ":slug", masterDataHandler.IdnSubdistrict().GetDetailV1)
+		idnSubdistrict.Handle("GET", ":slug/urban-villages", masterDataHandler.IdnSubdistrict().GetUrbanVillageCollection)
 	}
 }

@@ -70,3 +70,39 @@ func (h IdnDistrictHandler) GetDetailV1(context *gin.Context) {
 		Data:    h.Serializers.IdnDistrict().DefaultIdnDistrictDetailV1(*result),
 	})
 }
+
+func (h IdnDistrictHandler) GetSubdistrictCollectionV1(context *gin.Context) {
+	context, err := h.Validators.IdnDistrict().GetSubdistrictCollectionParameterV1(context)
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "E0001",
+		})
+		return
+	}
+
+	slug := context.Param("slug")
+	queries, _ := context.Get("queries")
+	results, pagination, err := h.Usecases.IdnDistrict().GetSubdistrictCollectionV1(slug, queries.(domainEntity.GetSubdistrictCollectionByDistrictParameterV1))
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "E0003",
+		})
+		return
+	}
+
+	if results == nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "S0001",
+		})
+		return
+	}
+
+	responseHelper.JSON(responseHelper.FieldsV1{
+		Context:    context,
+		Data:       h.Serializers.IdnDistrict().DefaultIdnSubdistrictCollectionV1(results),
+		Pagination: pagination,
+	})
+}

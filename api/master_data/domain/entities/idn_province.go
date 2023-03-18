@@ -1,6 +1,7 @@
 package masterDataDomainEntity
 
 type GetProvinceCollectionParameterV1 struct{ *GetCollectionParameterV1 }
+type GetDistrictCollectionByProvinceParameterV1 struct{ *GetCollectionParameterV1 }
 
 type DefaultIdnProvinceCollectionV1 struct {
 	Slug  string `json:"slug"`

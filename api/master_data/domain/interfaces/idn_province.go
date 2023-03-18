@@ -15,13 +15,13 @@ type IdnProvinceHandlers interface {
 
 type IdnProvinceUsecases interface {
 	GetCollectionV1(queries domainEntities.GetProvinceCollectionParameterV1) ([]models.IdnProvince, *paginationHelper.PaginationV1, error)
-	GetDistrictCollectionV1(provinceSlug string, queries domainEntities.GetDistrictCollectionParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
+	GetDistrictCollectionV1(provinceSlug string, queries domainEntities.GetDistrictCollectionByProvinceParameterV1) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
 	GetDetailV1(slug string) (*models.IdnProvince, error)
 }
 
 type IdnProvinceRepositories interface {
 	CollectionV1(queries *domainEntities.GetProvinceCollectionParameterV1, pagination bool) ([]models.IdnProvince, *paginationHelper.PaginationV1, error)
-	DistrictCollectionV1(model models.IdnDistrict, queries *domainEntities.GetDistrictCollectionParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
+	DistrictCollectionV1(model models.IdnProvince, queries *domainEntities.GetDistrictCollectionByProvinceParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error)
 	DetailV1(model models.IdnProvince) (*models.IdnProvince, error)
 }
 
@@ -33,4 +33,5 @@ type IdnProvinceSerializers interface {
 
 type IdnProvinceValidators interface {
 	GetCollectionParameterV1(ctx *gin.Context) (*gin.Context, error)
+	GetDistrictCollectionParameterV1(ctx *gin.Context) (*gin.Context, error)
 }

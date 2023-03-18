@@ -64,7 +64,7 @@ func (r IdnProvinceRepository) CollectionV1(queries *domainEntity.GetProvinceCol
 	return results, nil, nil
 }
 
-func (r IdnProvinceRepository) DistrictCollectionV1(model models.IdnDistrict, queries *domainEntity.GetDistrictCollectionParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error) {
+func (r IdnProvinceRepository) DistrictCollectionV1(model models.IdnProvince, queries *domainEntity.GetDistrictCollectionByProvinceParameterV1, withPagination bool) ([]models.IdnDistrict, *paginationHelper.PaginationV1, error) {
 	var results []models.IdnDistrict
 	offset := (queries.Page - 1) * queries.Limit
 
@@ -72,7 +72,7 @@ func (r IdnProvinceRepository) DistrictCollectionV1(model models.IdnDistrict, qu
 	if withPagination {
 		rawQuery = "SELECT * FROM idn_district WHERE idn_province_pkid = @provincePkid ORDER BY name ASC LIMIT @limit OFFSET @offset"
 		if queries.Search != "" {
-			rawQuery = "SELECT * FROM idn_district WHERE idn_province_pkid = @provincePkid and NAME lIKE @fkeyword ORDER BY LOCATE(@keyword, name) LIMIT @limit OFFSET @offset"
+			rawQuery = "SELECT * FROM idn_district WHERE idn_province_pkid = @provincePkid and name lIKE @fkeyword ORDER BY LOCATE(@keyword, name) LIMIT @limit OFFSET @offset"
 		}
 	} else {
 		if queries.Search != "" {
@@ -83,7 +83,7 @@ func (r IdnProvinceRepository) DistrictCollectionV1(model models.IdnDistrict, qu
 	err := r.Databases.MySqlDB.
 		Raw(
 			rawQuery,
-			sql.Named("provincePkid", model.IdnProvince.Pkid),
+			sql.Named("provincePkid", model.Pkid),
 			sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1)),
 			sql.Named("keyword", queries.Search),
 			sql.Named("offset", offset),
@@ -98,14 +98,14 @@ func (r IdnProvinceRepository) DistrictCollectionV1(model models.IdnDistrict, qu
 	if withPagination {
 		rawQuery = "SELECT pkid from idn_district WHERE idn_province_pkid = @provincePkid AND name like @fkeyword"
 		session := r.Databases.MySqlDB.
-			Raw(rawQuery, sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1)), sql.Named("provincePkid", model.IdnProvince.Pkid)).
+			Raw(rawQuery, sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1)), sql.Named("provincePkid", model.Pkid)).
 			Find(&[]models.IdnDistrict{})
 		if session.Error != nil {
-			return nil, nil, err
+			return nil, nil, session.Error
 		}
 
 		resPagination, err := paginationHelper.NewPagination(session.RowsAffected, queries.Page, queries.Limit)
-		if session.Error != nil {
+		if err != nil {
 			return nil, nil, err
 		}
 

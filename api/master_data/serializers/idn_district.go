@@ -40,3 +40,21 @@ func (s IdnDistrictSerializer) DefaultIdnDistrictDetailV1(dataModel models.IdnDi
 		IdnProvince: s.IdnProvince().DefaultDetailV1(dataModel.IdnProvince),
 	}
 }
+
+func (s IdnDistrictSerializer) DefaultIdnSubdistrictCollectionV1(dataModel []models.IdnSubdistrict) []domainEntities.DefaultIdnSubdistrictCollectionV1 {
+	results := make([]domainEntities.DefaultIdnSubdistrictCollectionV1, 0)
+
+	for _, data := range dataModel {
+		alias := ""
+		if data.Alias != "" {
+			alias = fmt.Sprintf(" (%s)", data.Alias)
+		}
+
+		results = append(results, domainEntities.DefaultIdnSubdistrictCollectionV1{
+			Slug: data.Slug,
+			Name: fmt.Sprintf("%s%s", data.Name, alias),
+		})
+	}
+
+	return results
+}
