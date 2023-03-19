@@ -13,7 +13,7 @@ func NewRouterV1(router *gin.RouterGroup, manager *manager.Manager) {
 	{
 		idnProvince.Handle("GET", "", masterDataHandler.IdnProvince().GetCollectionV1)
 		idnProvince.Handle("GET", ":slug", masterDataHandler.IdnProvince().GetDetailV1)
-		idnProvince.Handle("GET", ":slug/idn-districts", masterDataHandler.IdnProvince().GetDistrictCollectionV1)
+		idnProvince.Handle("GET", ":slug/districts", masterDataHandler.IdnProvince().GetDistrictCollectionV1)
 	}
 
 	idnDistrict := router.Group("/idn-district")

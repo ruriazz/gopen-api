@@ -9,6 +9,5 @@ type ResponseLog struct {
 	Headers        map[string][]string    `json:"headers"`
 	UserAgent      string                 `json:"user_agent"`
 	Latency        string                 `json:"latency"`
-	Response       interface{}            `json:"response"`
 	ResponseStatus int                    `json:"response_status"`
 }
