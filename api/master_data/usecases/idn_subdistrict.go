@@ -32,3 +32,25 @@ func (uc IdnSubdistrictUsecase) GetDetailV1(slug string) (*models.IdnSubdistrict
 
 	return nil, nil
 }
+
+func (uc IdnSubdistrictUsecase) GetUrbanVillageCollectionV1(slug string, queries domainEntity.GetUrbanVillageCollectionBySubdistrictParameterV1) ([]models.IdnUrbanVillage, *paginationHelper.PaginationV1, error) {
+	subdistrict, err := uc.Repositories.IdnSubdistrict().DetailV1(models.IdnSubdistrict{Slug: slug})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if subdistrict == nil {
+		return nil, nil, nil
+	}
+
+	results, pagination, err := uc.Repositories.IdnSubdistrict().UrbanVillageCollectionV1(*subdistrict, queries, true)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if results != nil {
+		return results, pagination, nil
+	}
+
+	return nil, nil, nil
+}

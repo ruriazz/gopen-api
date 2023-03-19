@@ -86,3 +86,78 @@ func (r IdnSubdistrictRepository) DetailV1(model models.IdnSubdistrict) (*models
 
 	return &model, nil
 }
+
+func (r IdnSubdistrictRepository) UrbanVillageCollectionV1(model models.IdnSubdistrict, queries domainEntity.GetUrbanVillageCollectionBySubdistrictParameterV1, withPagination bool) ([]models.IdnUrbanVillage, *paginationHelper.PaginationV1, error) {
+	var results []models.IdnUrbanVillage
+	offset := (queries.Page - 1) * queries.Limit
+
+	rawQuery := `
+		SELECT uv.* FROM idn_urban_village AS uv
+		JOIN idn_subdistrict AS s ON s.pkid = uv.idn_subdistrict_pkid
+		JOIN idn_district AS d ON d.pkid = s.idn_district_pkid
+		JOIN idn_province AS p ON p.pkid = d.idn_province_pkid
+		WHERE uv.idn_subdistrict_pkid = @subdistrictPkid
+		ORDER BY
+			p.name ASC,
+			d.name ASC,
+			s.name ASC
+	`
+	if withPagination {
+		rawQuery = `
+			SELECT uv.* FROM idn_urban_village AS uv
+			JOIN idn_subdistrict AS s ON s.pkid = uv.idn_subdistrict_pkid
+			JOIN idn_district AS d ON d.pkid = s.idn_district_pkid
+			JOIN idn_province AS p ON p.pkid = d.idn_province_pkid
+			WHERE uv.idn_subdistrict_pkid = @subdistrictPkid
+			ORDER BY
+				p.name ASC,
+				d.name ASC,
+				s.name ASC
+			LIMIT @limit OFFSET @offset
+		`
+
+		if queries.Search != "" {
+			rawQuery = "SELECT * FROM idn_urban_village WHERE idn_subdistrict_pkid = @subdistrictPkid AND name LIKE @fkeyword ORDER BY LOCATE(@keyword, name) LIMIT @limit OFFSET @offset"
+		}
+	} else {
+		if queries.Search != "" {
+			rawQuery = "SELECT * FROM idn_urban_village WHERE idn_subdistrict_pkid = @subdistrictPkid AND name LIKE @fkeyword ORDER BY LOCATE(@keyword, name)"
+		}
+	}
+
+	err := r.Databases.MySqlDB.
+		Raw(
+			rawQuery,
+			sql.Named("subdistrictPkid", model.Pkid),
+			sql.Named("keyword", queries.Search),
+			sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1)),
+			sql.Named("offset", offset),
+			sql.Named("limit", queries.Limit),
+		).
+		Find(&results).
+		Error
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if withPagination {
+		rawQuery = "SELECT pkid FROM idn_urban_village WHERE idn_subdistrict_pkid = @subdistrictPkid AND name LIKE @fkeyword"
+		session := r.Databases.MySqlDB.
+			Raw(rawQuery, sql.Named("subdistrictPkid", model.Pkid), sql.Named("fkeyword", strings.Replace("%?%", "?", queries.Search, 1))).
+			Find(&[]models.IdnUrbanVillage{})
+
+		if session.Error != nil {
+			return nil, nil, session.Error
+		}
+
+		resPagination, err := paginationHelper.NewPagination(session.RowsAffected, queries.Page, queries.Limit)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		return results, resPagination, nil
+	}
+
+	return results, nil, nil
+}

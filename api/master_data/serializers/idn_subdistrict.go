@@ -40,3 +40,22 @@ func (s IdnSubdistrictSerializer) DefaultIdnSubdistrictDetailV1(dataModel models
 		IdnDistrict: s.IdnDistrict().DefaultIdnDistrictDetailV1(dataModel.IdnDistrict),
 	}
 }
+
+func (s IdnSubdistrictSerializer) DefaultIdnUrbanVillageCollectionV1(dataModel []models.IdnUrbanVillage) []domainEntity.DefaultIdnUrbanVillageCollectionV1 {
+	results := make([]domainEntity.DefaultIdnUrbanVillageCollectionV1, 0)
+
+	for _, data := range dataModel {
+		alias := ""
+		if data.Alias != "" {
+			alias = fmt.Sprintf(" (%s)", data.Alias)
+		}
+
+		results = append(results, domainEntity.DefaultIdnUrbanVillageCollectionV1{
+			Slug:       data.Slug,
+			Name:       fmt.Sprintf("%s%s", data.Name, alias),
+			PostalCode: data.PostalCode,
+		})
+	}
+
+	return results
+}
