@@ -2,7 +2,7 @@ package models
 
 type IdnSubdistrict struct {
 	Pkid            int16 `gorm:"primaryKey" json:"-"`
-	IdnDistrictPkid int16 `json:"-"`
+	IdnDistrictPkid int16 `gorm:"index" json:"-"`
 	Slug            string
 	Code            string
 	Name            string

@@ -25,3 +25,17 @@ func (v IdnSubdistrictValidator) GetCollectionParameterV1(ctx *gin.Context) (*gi
 	ctx.Set("queries", params)
 	return ctx, nil
 }
+
+func (v IdnSubdistrictValidator) GetUrbanVillageCollectionParameterV1(context *gin.Context) (*gin.Context, error) {
+	var params domainEntity.GetUrbanVillageCollectionBySubdistrictParameterV1
+	if err := context.BindQuery(&params); err != nil {
+		return context, err
+	}
+
+	if (params == domainEntity.GetUrbanVillageCollectionBySubdistrictParameterV1{}) || params.Limit == 0 || params.Page == 0 {
+		return context, errors.New("")
+	}
+
+	context.Set("queries", params)
+	return context, nil
+}

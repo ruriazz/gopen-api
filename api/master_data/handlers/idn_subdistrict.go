@@ -63,6 +63,38 @@ func (h IdnSubdistrictHandler) GetDetailV1(context *gin.Context) {
 	})
 }
 
-func (h IdnSubdistrictHandler) GetUrbanVillageCollection(context *gin.Context) {
+func (h IdnSubdistrictHandler) GetUrbanVillageCollectionV1(context *gin.Context) {
+	context, err := h.Validators.IdnSubdistrict().GetUrbanVillageCollectionParameterV1(context)
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "E0001",
+		})
+		return
+	}
 
+	queries, _ := context.Get("queries")
+	slug := context.Param("slug")
+	results, pagination, err := h.Usecases.IdnSubdistrict().GetUrbanVillageCollectionV1(slug, queries.(domainEntity.GetUrbanVillageCollectionBySubdistrictParameterV1))
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "E0003",
+		})
+		return
+	}
+
+	if results == nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context:  context,
+			MetaCode: "S0001",
+		})
+		return
+	}
+
+	responseHelper.JSON(responseHelper.FieldsV1{
+		Context:    context,
+		Data:       h.Serializers.IdnSubdistrict().DefaultIdnUrbanVillageCollectionV1(results),
+		Pagination: pagination,
+	})
 }
