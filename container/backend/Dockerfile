@@ -1,13 +1,9 @@
 FROM golang:1.18-alpine
 
 WORKDIR /app
-
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
 COPY . ./
-# COPY /cmd ./
+
+RUN go mod download
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
 
