@@ -22,6 +22,10 @@ func (v IdnUrbanVillageValidator) GetUrbanVillageCollectionParameterV1(context *
 		return context, errors.New("")
 	}
 
+	if params.Limit > 300 {
+		params.Limit = 300
+	}
+
 	context.Set("queries", params)
 	return context, nil
 }

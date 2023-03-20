@@ -22,6 +22,10 @@ func (v IdnDistrictValidator) GetCollectionParameterV1(ctx *gin.Context) (*gin.C
 		return ctx, errors.New("")
 	}
 
+	if params.Limit > 300 {
+		params.Limit = 300
+	}
+
 	ctx.Set("queries", params)
 	return ctx, nil
 }
@@ -34,6 +38,10 @@ func (v IdnDistrictValidator) GetSubdistrictCollectionParameterV1(ctx *gin.Conte
 
 	if (params == domainEntity.GetSubdistrictCollectionByDistrictParameterV1{}) || params.Limit == 0 || params.Page == 0 {
 		return ctx, errors.New("")
+	}
+
+	if params.Limit > 300 {
+		params.Limit = 300
 	}
 
 	ctx.Set("queries", params)
