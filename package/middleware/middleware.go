@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	packageHelper "github.com/ruriazz/gopen-api/package/helper"
 	"github.com/ruriazz/gopen-api/package/logger"
 	restserver "github.com/ruriazz/gopen-api/package/rest_server"
 	"github.com/ruriazz/gopen-api/package/settings"
+	helpers "github.com/ruriazz/gopen-api/src/helpers/slice"
 )
 
 func NewMiddleware(setting *settings.Setting, server *restserver.Server) {
@@ -35,7 +35,7 @@ func DefaultMiddleware(settings *settings.Setting) gin.HandlerFunc {
 		}
 
 		hostname := strings.TrimPrefix(url.Hostname(), "www.")
-		if !packageHelper.StringInSlice(hostname, settings.HTTP_ALLOWED_HOSTS) {
+		if !helpers.StringInSlice(hostname, settings.HTTP_ALLOWED_HOSTS) {
 			c.String(403, fmt.Sprintf("'%s' is not allowed host", hostname))
 			c.Abort()
 		}

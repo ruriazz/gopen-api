@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	domainEntity "github.com/ruriazz/gopen-api/api/master_data/domain/entities"
 	domainInterface "github.com/ruriazz/gopen-api/api/master_data/domain/interfaces"
-	responseHelper "github.com/ruriazz/gopen-api/helpers/response"
+	responseHelper "github.com/ruriazz/gopen-api/src/helpers/response"
 )
 
 func (h MasterDataHandler) IdnDistrict() domainInterface.IdnDistrictHandlers {

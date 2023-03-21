@@ -1,8 +1,12 @@
-package settings
+package constants
 
 import "net/http"
 
-var API_META = []ApiMeta{
+var API_META = []struct {
+	Code     string
+	HttpCode uint
+	Message  string
+}{
 	{
 		Code:     "S0000",
 		HttpCode: http.StatusOK,
@@ -33,5 +37,15 @@ var API_META = []ApiMeta{
 		Code:     "E0003",
 		HttpCode: http.StatusBadRequest,
 		Message:  "Fetch Data Error",
+	},
+	{
+		Code:     "E0004",
+		HttpCode: http.StatusUnauthorized,
+		Message:  "Unkonown Secret Key",
+	},
+	{
+		Code:     "E0005",
+		HttpCode: http.StatusUnauthorized,
+		Message:  "Response Token Invalid",
 	},
 }

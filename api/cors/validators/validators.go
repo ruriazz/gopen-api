@@ -10,8 +10,6 @@ type CorsValidator struct {
 	Repositories domainInterface.CorsRepositories
 }
 
-type HostnameValidator struct{ *CorsValidator }
-
 func NewCorsValidator(manager manager.Manager, repositories domainInterface.CorsRepositories) domainInterface.CorsValidators {
 	return CorsValidator{
 		Manager:      manager,

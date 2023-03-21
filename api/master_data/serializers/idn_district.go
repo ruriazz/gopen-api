@@ -5,7 +5,7 @@ import (
 
 	domainEntities "github.com/ruriazz/gopen-api/api/master_data/domain/entities"
 	domainInterface "github.com/ruriazz/gopen-api/api/master_data/domain/interfaces"
-	"github.com/ruriazz/gopen-api/models"
+	"github.com/ruriazz/gopen-api/src/models"
 )
 
 func (s MasterDataSerializer) IdnDistrict() domainInterface.IdnDistrictSerializers {
