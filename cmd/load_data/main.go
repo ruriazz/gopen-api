@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/ruriazz/gopen-api/models"
 	"github.com/ruriazz/gopen-api/package/databases"
 	"github.com/ruriazz/gopen-api/package/settings"
+	"github.com/ruriazz/gopen-api/src/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

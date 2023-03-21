@@ -60,12 +60,12 @@ func main() {
 	}
 
 	if args[0] != "status" {
-		if err := goose.Status(_db, "migrations"); err != nil {
+		if err := goose.Status(_db, "src/migrations"); err != nil {
 			panic(err)
 		}
 	}
 
-	if err := goose.RunWithOptions(args[0], _db, "migrations", []string{}, options...); err != nil {
+	if err := goose.RunWithOptions(args[0], _db, "src/migrations", []string{}, options...); err != nil {
 		panic(err)
 	}
 }

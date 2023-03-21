@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ruriazz/gopen-api/package/settings"
+	constant "github.com/ruriazz/gopen-api/src/constants"
 )
 
 func JSON(fields FieldsV1) {
@@ -14,9 +14,21 @@ func JSON(fields FieldsV1) {
 		fields.MetaCode = "S0000"
 	}
 
-	metaObject := apiMetaByCode(fields.MetaCode)
-	if metaObject == nil {
-		panic(fmt.Errorf("invalid API Meta with code '%s'", fields.MetaCode))
+	var metaObject *struct {
+		Code     string
+		HttpCode uint
+		Message  string
+	}
+
+	if fields.Error != nil {
+		metaObject = apiMetaByError(fields.Error)
+	}
+
+	if metaObject == nil && fields.MetaCode != "" {
+		metaObject = apiMetaByCode(fields.MetaCode)
+		if metaObject == nil {
+			panic(fmt.Errorf("invalid API Meta with code '%s'", fields.MetaCode))
+		}
 	}
 
 	rt := fields.Context.GetTime("requestTime")
@@ -42,8 +54,27 @@ func JSON(fields FieldsV1) {
 	fields.Context.Next()
 }
 
-func apiMetaByCode(code string) *settings.ApiMeta {
-	for _, meta := range settings.API_META {
+func apiMetaByCode(code string) *struct {
+	Code     string
+	HttpCode uint
+	Message  string
+} {
+	for _, meta := range constant.API_META {
+		if meta.Code == code {
+			return &meta
+		}
+	}
+
+	return nil
+}
+
+func apiMetaByError(err error) *struct {
+	Code     string
+	HttpCode uint
+	Message  string
+} {
+	code := err.Error()
+	for _, meta := range constant.API_META {
 		if meta.Code == code {
 			return &meta
 		}

@@ -6,8 +6,8 @@ import (
 
 	domainEntity "github.com/ruriazz/gopen-api/api/master_data/domain/entities"
 	domainInterface "github.com/ruriazz/gopen-api/api/master_data/domain/interfaces"
-	paginationHelper "github.com/ruriazz/gopen-api/helpers/pagination"
-	"github.com/ruriazz/gopen-api/models"
+	paginationHelper "github.com/ruriazz/gopen-api/src/helpers/pagination"
+	"github.com/ruriazz/gopen-api/src/models"
 )
 
 func (r MasterDataRepository) IdnSubdistrict() domainInterface.IdnSubdistrictRepositories {

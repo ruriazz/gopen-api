@@ -13,9 +13,3 @@ type Setting struct {
 	CORS_ALLOWED_METHODS []string
 	MYSQL_DSN            string `mapstructure:"MYSQL_DSN"`
 }
-
-type ApiMeta struct {
-	Code     string
-	HttpCode uint
-	Message  string
-}

@@ -2,7 +2,7 @@ package responseHelper
 
 import (
 	"github.com/gin-gonic/gin"
-	paginationHelper "github.com/ruriazz/gopen-api/helpers/pagination"
+	paginationHelper "github.com/ruriazz/gopen-api/src/helpers/pagination"
 )
 
 type BaseResponseV1 struct {
@@ -25,4 +25,5 @@ type FieldsV1 struct {
 	Message    interface{}
 	Data       interface{}
 	Pagination *paginationHelper.PaginationV1
+	Error      error
 }
