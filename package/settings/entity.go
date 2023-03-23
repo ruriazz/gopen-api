@@ -3,6 +3,7 @@ package settings
 type Setting struct {
 	APP_ENV              string `mapstructure:"APP_ENV"`
 	APP_TZ               string `mapstructure:"APP_TZ"`
+	SECRET_KEY           string `mapstructure:"SECRET_KEY"`
 	HTTP_SERVER_HOST     string `mapstructure:"HTTP_SERVER_HOST"`
 	HTTP_SERVER_PORT     string `mapstructure:"HTTP_SERVER_PORT"`
 	HTTP_READ_TIMEOUT    int8   `mapstructure:"HTTP_READ_TIMEOUT"`

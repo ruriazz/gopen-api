@@ -1,7 +1,7 @@
 package models
 
 type Consumer struct {
-	Pkid         int16 `gorm:"primaryKey" json:"-"`
+	Pkid         int `gorm:"primaryKey" json:"-"`
 	Hostname     string
 	EmailAddress string
 	PrivateKey   string
