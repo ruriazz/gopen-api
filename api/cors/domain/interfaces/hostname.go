@@ -16,9 +16,14 @@ type HostnameUsecases interface {
 	RegisterV1(domainEntity.RegisterDataV1) (*models.Consumer, error)
 }
 
-type HostnameRepositories interface{}
+type HostnameRepositories interface {
+	SingleConsumerV1(model models.Consumer) (*models.Consumer, error)
+	CreateOneV1(model models.Consumer) (*models.Consumer, error)
+}
 
-type HostnameSerializers interface{}
+type HostnameSerializers interface {
+	DefaultConsumerInfoV1(model models.Consumer) domainEntity.DefaultConsumerInfoV1
+}
 
 type HostnameValidators interface {
 	RegisterV1(context *gin.Context) (*gin.Context, error)

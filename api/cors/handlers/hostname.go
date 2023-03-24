@@ -6,7 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	domainEntity "github.com/ruriazz/gopen-api/api/cors/domain/entities"
 	domainInterface "github.com/ruriazz/gopen-api/api/cors/domain/interfaces"
+	"github.com/ruriazz/gopen-api/src/constants"
 	responseHelper "github.com/ruriazz/gopen-api/src/helpers/response"
+	"github.com/ruriazz/gopen-api/src/models"
 )
 
 func (h CorsHandler) Hostname() domainInterface.HostnameHandlers {
@@ -35,12 +37,20 @@ func (h HostnameHandler) RegisterV1(context *gin.Context) {
 
 	responseHelper.JSON(responseHelper.FieldsV1{
 		Context: context,
-		Data:    result,
+		Data:    h.Serializers.Hostname().DefaultConsumerInfoV1(*result),
 	})
 }
 
 func (h HostnameHandler) GetInfoV1(context *gin.Context) {
+	data, _ := context.Get(constants.VAR_CONSUMER_DATA)
+	if data == nil {
+		return
+	}
 
+	responseHelper.JSON(responseHelper.FieldsV1{
+		Context: context,
+		Data:    h.Serializers.Hostname().DefaultConsumerInfoV1(data.(models.Consumer)),
+	})
 }
 
 func (h HostnameHandler) NewChallenge(context *gin.Context) {
