@@ -12,5 +12,9 @@ type Setting struct {
 	CORS_ALLOWED_ORIGINS []string
 	CORS_ALLOWED_HEADERS []string
 	CORS_ALLOWED_METHODS []string
-	MYSQL_DSN            string `mapstructure:"MYSQL_DSN"`
+	MYSQL_DSN            string  `mapstructure:"MYSQL_DSN"`
+	HCAPTCHA_SECRET_KEY  string  `mapstructure:"HCAPTCHA_SECRET_KEY"`
+	HCAPTCHA_API_URI     string  `mapstructure:"HCAPTCHA_API_URI"`
+	HCAPTCHA_CTS_LIMIT   float64 `mapstructure:"HCAPTCHA_CTS_LIMIT"`
+	HASHIDS_SALT         string  `mapstructure:"HASHIDS_SALT"`
 }

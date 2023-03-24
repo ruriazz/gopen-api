@@ -41,11 +41,22 @@ var API_META = []struct {
 	{
 		Code:     "E0004",
 		HttpCode: http.StatusUnauthorized,
-		Message:  "Unkonown Secret Key",
+		Message:  "Unknown Secret Key",
 	},
 	{
 		Code:     "E0005",
 		HttpCode: http.StatusUnauthorized,
-		Message:  "Response Token Invalid",
+		Message:  "Invalid Secret Key",
+	},
+	{
+		Code:     "E0006",
+		HttpCode: http.StatusBadRequest,
+		Message:  "Invalid Response Token",
+	},
+
+	{
+		Code:     "E1000",
+		HttpCode: http.StatusBadRequest,
+		Message:  "Hostname Already Registered",
 	},
 }
