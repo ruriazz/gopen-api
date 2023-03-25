@@ -6,13 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 	domainEntity "github.com/ruriazz/gopen-api/api/cors/domain/entities"
 	domainInterface "github.com/ruriazz/gopen-api/api/cors/domain/interfaces"
+	"github.com/ruriazz/gopen-api/package/logger"
 	"github.com/ruriazz/gopen-api/src/constants"
 	responseHelper "github.com/ruriazz/gopen-api/src/helpers/response"
 	"github.com/ruriazz/gopen-api/src/models"
 )
 
 func (h CorsHandler) Hostname() domainInterface.HostnameHandlers {
-	return HostnameHandler{&h}
+	handler := HostnameHandler{&h}
+
+	handler.Logger = logger.NewExecutionLog(constants.HANDLER_MODULE, "corsHandler", "HostnameHandler")
+	return handler
 }
 
 func (h HostnameHandler) RegisterV1(context *gin.Context) {
@@ -44,6 +48,7 @@ func (h HostnameHandler) RegisterV1(context *gin.Context) {
 func (h HostnameHandler) GetInfoV1(context *gin.Context) {
 	data, _ := context.Get(constants.VAR_CONSUMER_DATA)
 	if data == nil {
+		h.Logger.Error("GetInfoV1", 1, "no authorization data", context)
 		return
 	}
 

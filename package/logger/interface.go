@@ -12,5 +12,3 @@ type Log interface {
 	// CustomLog(r http.Request, level string, data interface{})
 	ApiLog(c *gin.Context, t time.Time)
 }
-
-type LogOptions struct{}

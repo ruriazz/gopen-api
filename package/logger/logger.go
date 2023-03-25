@@ -11,6 +11,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type LogOptions struct{}
+
 func NewLogger() Log {
 	opt := new(LogOptions)
 	log.SetFormatter(&log.JSONFormatter{})
