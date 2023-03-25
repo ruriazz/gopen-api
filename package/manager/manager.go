@@ -1,6 +1,7 @@
 package manager
 
 import (
+	"github.com/ruriazz/gopen-api/package/authentication"
 	"github.com/ruriazz/gopen-api/package/databases"
 	"github.com/ruriazz/gopen-api/package/middleware"
 	restserver "github.com/ruriazz/gopen-api/package/rest_server"
@@ -28,8 +29,9 @@ func NewManager() (*Manager, error) {
 	middleware.NewMiddleware(_settings, _server)
 
 	return &Manager{
-		Settings:  _settings,
-		Databases: &_db,
-		Server:    _server,
+		Settings:       _settings,
+		Databases:      &_db,
+		Server:         _server,
+		Authentication: authentication.NewAuthentication(*_settings, _db),
 	}, nil
 }

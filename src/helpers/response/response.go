@@ -51,7 +51,8 @@ func JSON(fields FieldsV1) {
 	}
 
 	fields.Context.JSON(int(metaObject.HttpCode), response)
-	fields.Context.Next()
+	// fields.Context.Next()
+	fields.Context.Abort()
 }
 
 func apiMetaByCode(code string) *struct {

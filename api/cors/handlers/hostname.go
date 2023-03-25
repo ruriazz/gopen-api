@@ -47,11 +47,6 @@ func (h HostnameHandler) RegisterV1(context *gin.Context) {
 
 func (h HostnameHandler) GetInfoV1(context *gin.Context) {
 	data, _ := context.Get(constants.VAR_CONSUMER_DATA)
-	if data == nil {
-		h.Logger.Error("GetInfoV1", 1, "no authorization data", context)
-		return
-	}
-
 	responseHelper.JSON(responseHelper.FieldsV1{
 		Context: context,
 		Data:    h.Serializers.Hostname().DefaultConsumerInfoV1(data.(models.Consumer)),
