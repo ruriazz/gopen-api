@@ -1,8 +1,6 @@
 package middleware
 
 import (
-	"net/http"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/ruriazz/gopen-api/package/settings"
@@ -25,7 +23,6 @@ func newCors(settings *settings.Setting) gin.HandlerFunc {
 }
 
 func registeredCorsValidation(context *gin.Context) *gin.Context {
-	context.String(http.StatusForbidden, "forbidden")
-	context.Abort()
+
 	return context
 }

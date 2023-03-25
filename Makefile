@@ -19,3 +19,12 @@ generate-mock:
 	@echo "Generating..."
 	@mockgen -destination=package/settings/settings_test.go -package=settings -source=package/settings/settings.go
 	@echo "Done!"
+
+build:
+	@echo "build ghcr.io/ruriazz/gopen-api:latest"
+	@container/backend/build.sh
+	@echo "ghcr.io/ruriazz/gopen-api:latest build complete\n\n"
+
+	@echo "build ghcr.io/ruriazz/gopen-api-commands:latest"
+	@container/commands/build.sh
+	@echo "ghcr.io/ruriazz/gopen-api-commands:latest build complete"
