@@ -6,3 +6,8 @@ docker buildx build \
     -t ghcr.io/ruriazz/gopen-api:latest \
     -f container/backend/Dockerfile \
     --push .
+docker buildx build \
+    --platform linux/arm64/v8,linux/amd64 \
+    -t ghcr.io/ruriazz/gopen-api-commands:latest \
+    -f container/commands/Dockerfile \
+    --push .

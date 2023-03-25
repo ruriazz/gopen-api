@@ -40,6 +40,8 @@ func DefaultMiddleware(settings *settings.Setting) gin.HandlerFunc {
 			c.Abort()
 		}
 
+		c = registeredCorsValidation(c)
+
 		c.Set("requestTime", t)
 		c.Next()
 

@@ -59,4 +59,9 @@ var API_META = []struct {
 		HttpCode: http.StatusBadRequest,
 		Message:  "Hostname Already Registered",
 	},
+	{
+		Code:     "E1001",
+		HttpCode: http.StatusBadRequest,
+		Message:  "Hostname Register Error",
+	},
 }
