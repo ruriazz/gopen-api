@@ -13,6 +13,6 @@ func NewRouterV1(router *gin.RouterGroup, manager *manager.Manager) {
 	{
 		hostname.Handle("GET", "", manager.Authentication.SecretKey, corshandler.Hostname().GetInfoV1)
 		hostname.Handle("POST", "", corshandler.Hostname().RegisterV1)
-		hostname.Handle("POST", "challenge", corshandler.Hostname().NewChallenge)
+		hostname.Handle("POST", "challenge", manager.Authentication.SecretKey, corshandler.Hostname().CreateChallengeV1)
 	}
 }

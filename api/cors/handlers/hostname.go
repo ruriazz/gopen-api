@@ -53,6 +53,37 @@ func (h HostnameHandler) GetInfoV1(context *gin.Context) {
 	})
 }
 
-func (h HostnameHandler) NewChallenge(context *gin.Context) {
+func (h HostnameHandler) CreateChallengeV1(context *gin.Context) {
+	if err := h.Validators.Hostname().CreateChallengeV1(context); err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context: context,
+			Error:   errors.New("E0002"),
+		})
+		return
+	}
 
+	data, _ := context.Get("data")
+	consumer, _ := context.Get(constants.VAR_CONSUMER_DATA)
+
+	consumerChallenge, err := h.Usecases.Hostname().CreateChallengeV1(consumer.(models.Consumer), data.(domainEntity.CreateChallengeV1))
+	if err != nil {
+		responseHelper.JSON(responseHelper.FieldsV1{
+			Context: context,
+			Error:   err,
+		})
+		return
+	}
+
+	var result any
+	switch consumerChallenge.ChallengeType {
+	case constants.ACME.String():
+		result = h.Serializers.Hostname().DefaultCreateACMEChallengeV1(*consumerChallenge)
+	case constants.DNS.String():
+		result = h.Serializers.Hostname().DefaultCreateDNSChallengeV1(*consumerChallenge)
+	}
+
+	responseHelper.JSON(responseHelper.FieldsV1{
+		Context: context,
+		Data:    result,
+	})
 }

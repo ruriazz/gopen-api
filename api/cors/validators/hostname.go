@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	domainEntity "github.com/ruriazz/gopen-api/api/cors/domain/entities"
 	domainInterface "github.com/ruriazz/gopen-api/api/cors/domain/interfaces"
+	"github.com/ruriazz/gopen-api/src/constants"
 	stringHelper "github.com/ruriazz/gopen-api/src/helpers/string"
 )
 
@@ -38,4 +39,22 @@ func (v HostnameValidator) RegisterV1(context *gin.Context) (*gin.Context, error
 	data.Email = strings.ToLower(data.Email)
 	context.Set("data", data)
 	return context, nil
+}
+
+func (v HostnameValidator) CreateChallengeV1(context *gin.Context) error {
+	var data domainEntity.CreateChallengeV1
+	if err := context.ShouldBindJSON(&data); err != nil {
+		return err
+	}
+
+	if data.ChallengeType == "" || data.ResponseToken == "" {
+		return errors.New("(HostnameValidator.CreateChallengeV1) invalid required fields")
+	}
+
+	if data.ChallengeType != constants.ACME.String() && data.ChallengeType != constants.DNS.String() {
+		return fmt.Errorf("(HostnameValidator.CreateChallengeV1) '%s' is invalid type", data.ChallengeType)
+	}
+
+	context.Set("data", data)
+	return nil
 }

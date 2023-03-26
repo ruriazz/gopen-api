@@ -64,4 +64,19 @@ var API_META = []struct {
 		HttpCode: http.StatusBadRequest,
 		Message:  "Hostname Register Error",
 	},
+	{
+		Code:     "E1002",
+		HttpCode: http.StatusBadRequest,
+		Message:  "Verified Hostname",
+	},
+	{
+		Code:     "E1003",
+		HttpCode: http.StatusBadRequest,
+		Message:  "Create Challenge Error",
+	},
+	{
+		Code:     "E1004",
+		HttpCode: http.StatusBadRequest,
+		Message:  "Challenge Has Been Created",
+	},
 }
