@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	encryptionHelper "github.com/ruriazz/gopen-api/src/helpers/encryption"
 )
@@ -13,6 +14,9 @@ type Consumer struct {
 	IsActive       bool
 	IsValidated    bool
 	SecretKey      string `json:"-"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	DeletedAt      time.Time `gorm:"index;default:NULL" json:"-"`
 }
 
 func (Consumer) TableName() string {

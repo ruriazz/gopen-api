@@ -43,3 +43,38 @@ func (r HostnameRepository) CreateOneV1(model models.Consumer) (*models.Consumer
 
 	return &model, nil
 }
+
+func (r HostnameRepository) GetOneConsumerChallengeV1(model *models.ConsumerChallenge, preload bool) error {
+	session := r.Databases.MySqlDB.Where(&model)
+	if preload {
+		session = session.Preload("Consumer")
+	}
+
+	if err := session.First(&model).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return constants.ErrorRecordNotFound
+		}
+
+		r.Logger.Error("GetOneConsumerChallengeV1", 1, err.Error(), nil)
+		return err
+	}
+	return nil
+}
+
+func (r HostnameRepository) CeateConsumerChallengeV1(model *models.ConsumerChallenge) error {
+	if err := r.Databases.MySqlDB.Create(&model).Error; err != nil {
+		r.Logger.Error("CeateConsumerChallengeV1", 1, err.Error(), nil)
+		return err
+	}
+
+	return nil
+}
+
+func (r HostnameRepository) UpdateConsumerChallengeV1(model *models.ConsumerChallenge, newData models.ConsumerChallenge) error {
+	if err := r.Databases.MySqlDB.Model(&model).Updates(newData).Error; err != nil {
+		r.Logger.Error("UpdateConsumerChallengeV1", 1, err.Error(), nil)
+		return err
+	}
+
+	return nil
+}
